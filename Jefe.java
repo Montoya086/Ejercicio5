@@ -8,6 +8,7 @@ Modificacion: 27/09/2021
 public class Jefe extends Enemigo{
     public Jefe(String nombre){
         super(nombre);
+        tipo="Enemigo";
         if(nombre=="Slime"){
             this.nombre="Slime boss";
             habilidad.add("Veneno refinado");

@@ -9,9 +9,11 @@ import java.util.ArrayList;
 public class Juego {
     ArrayList<Combatiente> combatientes;
     int nenemigos;
-    public Juego(String clase, String nombre){
+    public Juego(String[] clase, String[] nombre, int numero){
         combatientes = new ArrayList<Combatiente>();
-        combatientes.add(new Jugador(nombre, clase));
+        for(int i=0;i<numero;i++){
+            combatientes.add(new Jugador(nombre[i], clase[i]));
+        }
         nenemigos=(int)(Math.random()*3+1);//numero de enemigos
         int jefe = (int)(Math.random()*100);//posibilidad de ser jefe
         if(jefe>=50){//generar jefe
@@ -39,18 +41,17 @@ public class Juego {
                 combatientes.add(new Enemigo("Goblin"));
             }
         }
+        combatientes.add(new Raidboss("Borg"));
     }
     
     /** 
      * @param atacante
-     * @param index)if(combatientes.get(index).getVida()<=0
      */
     public void atacar(int atacante, int objetivo){//atacar
         combatientes.get(objetivo).disminuir_vida(combatientes.get(atacante).getAtq());
     }
     
     /** 
-     * @param index)if(combatientes.get(index).getVida()<=0
      * @return boolean
      */
     public boolean verificar_vivo(int index){//verificar si un combatiente está vivo
@@ -60,16 +61,12 @@ public class Juego {
             return true;
         }
     }
-    
-    /** 
-     * @param i=0;i<combatientes.size();i++
-     */
+
     public void eliminar_combatiente(int index){//eliminar combatiente
         combatientes.remove(index);
     }
     
     /** 
-     * @param i=0;i<combatientes.size();i++
      * @return String
      */
     public String mostrar_combatientes(){//mostrar lista de combatientes
@@ -81,7 +78,6 @@ public class Juego {
     }
     
     /** 
-     * @param nombre)if(combatientes.size()==1
      * @return int
      */
     public int ncombatientes(){//mostrar cantidad de combatientes
@@ -89,7 +85,6 @@ public class Juego {
     }
     
     /** 
-     * @param nombre)if(combatientes.size()==1
      * @return String
      */
     public String getNombre(int index){//mostrar nombre del combatiente
@@ -97,7 +92,6 @@ public class Juego {
     }
     
     /** 
-     * @param nombre)if(combatientes.size()==1
      * @return String
      */
     public String getMsgInicio(int index){//mostrar mensaje de inicio de un combatiente
@@ -105,7 +99,6 @@ public class Juego {
     }
     
     /** 
-     * @param nombre)if(combatientes.size()==1
      * @return String
      */
     public String getMsgMuerte(int index){//mostrar mensaje de muerte de un combatiente
@@ -113,7 +106,6 @@ public class Juego {
     }
     
     /** 
-     * @param nombre)if(combatientes.size()==1
      * @return String
      */
     public String getMsgVictoria(int index){//mostrar mensaje de victoria de un combatiente
@@ -121,36 +113,34 @@ public class Juego {
     }
     
     /** 
-     * @param nombre)if(combatientes.size()==1
      * @return boolean
      */
-    public boolean verificar_win(String nombre){//verificar si el jugador ganó
-        if(combatientes.size()==1){
-            if(combatientes.get(0).getNombre()==nombre){
-                return true;
-            }else{
-                return false;
+    public boolean verificar_win(){//verificar si el jugador ganó
+        boolean win=true;
+        for(int i=0;i<combatientes.size();i++){
+            if(combatientes.get(i).getTipo().equals("Jefe")){
+                win=false;
             }
-        }else{
-            return false;
         }
+        return win;
     }
     
     /** 
-     * @param nombre)if(combatientes.get(0).getNombre()!=nombre
      * @return boolean
      */
-    public boolean verificar_derrota(String nombre){//verificar derrota
-        if(combatientes.get(0).getNombre()!=nombre){
-            return true;
-        }else{
-            return false;
+    public boolean verificar_derrota(){//verificar derrota
+        boolean loose=true;
+        for(int i=0;i<combatientes.size();i++){
+            if(combatientes.get(i).getTipo().equals("Guerrero")||combatientes.get(i).getTipo().equals("Explorador")||combatientes.get(i).getTipo().equals("Cazador")){
+                loose=false;
+            }
         }
+        return loose;
     }
-    public String mostrar_items(){//mostrar items
-        return combatientes.get(0).get_habilidades();
+    public String mostrar_items(int index){//mostrar items
+        return combatientes.get(index).get_habilidades();
     }
-    public int numero_items(){//mostrar numero de items
+    public int numero_items(int index){//mostrar numero de items
         return combatientes.get(0).cantidad_habilidades();
     }
     public String mostrar_habilidades(int index){//mostrar habilidades
@@ -207,9 +197,66 @@ public class Juego {
                 combatientes.get(objetivo).aumentar_vida(175);
                 combatientes.get(portador).eliminar_habilidad(habilidad);
                 break;
+            case "Robar alma":
+                combatientes.get(objetivo).disminuir_vida(150);
+                combatientes.get(portador).aumentar_vida(50);
+                break;
+            case "Mordida":
+                combatientes.get(objetivo).disminuir_vida(combatientes.get(portador).getAtq());
+                break;
             default:
                 break;
         }
     }
-
+    public String getTipocombatiente(int index){
+        return combatientes.get(index).getTipo();
+    }
+    public void lanzar_acompañante(int turno,int index){
+        combatientes.add(combatientes.get(turno).getAcompanante(index));
+    }
+    public boolean acompañante_lanzado(int turno,int index){
+        boolean lanzado=false;
+        if(combatientes.get(turno).numeroAcompanantes()!=0){
+            for(int i=0;i<combatientes.size();i++){
+                if(combatientes.get(i).equals(combatientes.get(turno).getAcompanante(index))){
+                    lanzado=true;
+                }
+            }
+        }
+        return lanzado;
+    }
+    public int turno_acompañante(int turno,int index){
+        int indice=-1;
+        if(combatientes.get(turno).numeroAcompanantes()!=0){
+            for(int i=0;i<combatientes.size();i++){
+                if(combatientes.get(i).equals(combatientes.get(turno).getAcompanante(index))){
+                    indice=i;
+                }
+            }
+        }
+        return indice;
+    }
+    public boolean verificar_mascota(int index){
+        boolean mascota=false;
+        if(combatientes.get(index).getTipo().equals("Mascota")){
+            mascota=true;
+        }
+        return mascota;
+    }
+    public void reiniciar(int index){
+        combatientes.get(index).reiniciar_atq();
+        combatientes.get(index).reiniciar_vida();
+    }
+    public void setEfecto(int index,int rondas){
+        combatientes.get(index).setEfecto(rondas);
+    }
+    public int getEfecto(int index){
+        return combatientes.get(index).getAcompanante(0).getEfecto();
+    }
+    public void reducirEfecto(int index){
+        combatientes.get(index).getAcompanante(0).reducirEfecto();
+    }
+    public int numeroAcompanantes(int index){
+        return combatientes.get(index).numeroAcompanantes();
+    }
 }

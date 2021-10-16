@@ -13,6 +13,7 @@ public class Jugador extends Combatiente{
         super(nombre);
         if(clase=="Guerrero"){
             this.clase="Guerrero";
+            tipo="Guerrero";
             atq= 200;
             vida= 700;
             items=new ArrayList<String>();
@@ -24,6 +25,7 @@ public class Jugador extends Combatiente{
         }
         if(clase=="Explorador"){
             this.clase="Exlorador";
+            tipo="Explorador";
             atq= 70;
             vida= 300;
             items=new ArrayList<String>();
@@ -35,10 +37,22 @@ public class Jugador extends Combatiente{
             msg_muerte="No puede ser...";
             msg_victoria="El gremio me dara una gran recompensa!";
         }
+        if(clase=="Cazador"){
+            this.clase="Cazador";
+            tipo="Cazador";
+            atq= 20;
+            vida= 600;
+            items=new ArrayList<String>();
+            items.add("Posion de fuerza");
+            acompañantes=new ArrayList<Acompanante>();
+            acompañantes.add(new Mascota("Lobo mistico"));
+            msg_inicio="Estas bestias seran mias";
+            msg_muerte="Las cazare!!...";
+            msg_victoria="Nadie se opone al gran cazador!";
+        }
     }
     
     /** 
-     * @param i=0;i<items.size();i++
      * @return String
      */
     public String get_habilidades(){//desplegar lista de items

@@ -10,6 +10,7 @@ public class Enemigo extends Combatiente{
     protected ArrayList<String> habilidad;
     public Enemigo(String nombre){
         super(nombre);
+        tipo="Enemigo";
         habilidad=new ArrayList<String>();
         if(nombre=="Slime"){
             habilidad.add("Veneno");
@@ -53,7 +54,6 @@ public class Enemigo extends Combatiente{
     }
     
     /** 
-     * @param i=0;i<habilidad.size();i++
      * @return String
      */
     public String get_habilidades(){//desplegar lista de habilidades

@@ -29,6 +29,16 @@ public class Vista {
             System.out.println("Ingrese la clase de su jugador");
             System.out.println("1.Guerrero");
             System.out.println("2.Explorador");
+            System.out.println("3.Cazador");
+            return Integer.parseInt(sc.nextLine());
+        }catch(Exception e){
+            return 0;
+        }
+    }
+
+    public int numero_jugadores(){
+        try{
+            System.out.println("Ingrese el numero de jugadores (1-3):");
             return Integer.parseInt(sc.nextLine());
         }catch(Exception e){
             return 0;
@@ -44,7 +54,6 @@ public class Vista {
     }
     
     /** 
-     * @param lista
      * @return int
      */
     public int elegir_objetivo(String lista){//elegir objetivo
@@ -57,23 +66,14 @@ public class Vista {
         }
     }
     
-    /** 
-     * @param lista
-     */
     public void objetivo(){// mensaje de elegir objetivo
         System.out.println("Elige tu objetivo:");
     }
     
-    /** 
-     * @param lista
-     */
     public void item(){// mensaje de elegir item
         System.out.println("Elige tu item:");
     }
-    
-    /** 
-     * @param lista
-     */
+
     public void habilidad(){// mesnaje de elegir habilidad
         System.out.println("Elige tu habilidad:");
     }
@@ -112,7 +112,8 @@ public class Vista {
             System.out.println("Ingrese la opcion a ejectuar:");
             System.out.println("1.Atacar");
             System.out.println("2.Usar item");
-            System.out.println("3.Saltar turno");
+            System.out.println("3.Lanzar mascota");
+            System.out.println("4.Saltar turno");
             return Integer.parseInt(sc.nextLine());
         }catch(Exception e){
             return 0;
@@ -134,6 +135,24 @@ public class Vista {
             return 0;
         }
     }
+    /** 
+     * @return int
+     */
+    public int menu_boss(){//menu de los enemigos
+        try{
+            System.out.println("Ingrese la opcion a ejectuar:");
+            System.out.println("1.Atacar");
+            System.out.println("2.Usar habilidad");
+            System.out.println("3.Lanzar acompañante");
+            System.out.println("4.Clonar");
+            System.out.println("5.Variar");
+            System.out.println("6.Liberar");
+            System.out.println("7.Saltar turno");
+            return Integer.parseInt(sc.nextLine());
+        }catch(Exception e){
+            return 0;
+        }
+    }
     public void mostrar_turno(String n){//mostrar de quien es el turno
         System.out.println("Truno de: "+n);
     }
@@ -148,5 +167,29 @@ public class Vista {
     }
     public void lose(){//mensaje de perder
         System.out.println("Los heroes han sido derrotados...");
+    }
+    public void noItems(){//mensaje de perder
+        System.out.println("No hay items disponibles");
+    }
+    public void nomascota(){//mensaje de perder
+        System.out.println("Solo los cazadores pueden usar mascotas");
+    }
+    public void noacompanante(){//mensaje de perder
+        System.out.println("No hay acompañantes disponibles");
+    }
+    public void lanzado(){//mensaje de perder
+        System.out.println("El acompañante está en el campo de batalla");
+    }
+    public void lanzado2(){//mensaje de perder
+        System.out.println("Algunos acompañantes ya estan en el campo de batalla, lanzando a los que no lo esten");
+    }
+    public void ataque_acompañante(){//mensaje de perder
+        System.out.println("El acompañante ha atacado con su dueño");
+    }
+    public void mascota_recuperandose(int rondas){
+        System.out.println("La mascota ha muerto y se esta recuperando. Rondas restantes: "+rondas);
+    }
+    public void noclonable(){
+        System.out.println("El objetivo seleccionado no es clonable");
     }
 }
