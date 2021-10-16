@@ -1,3 +1,10 @@
+/*
+Nombre: Andrés Estuardo Montoya Wilhelm
+Programa: Acompañante.java
+Lenguaje: Java
+Creación: 10/10/2021
+Modificacion: 16/10/2021
+*/
 import java.util.ArrayList;
 public abstract class Acompanante extends Combatiente{
     protected ArrayList<String> habilidad;

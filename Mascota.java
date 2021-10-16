@@ -1,3 +1,10 @@
+/*
+Nombre: Andrés Estuardo Montoya Wilhelm
+Programa: Mascota.java
+Lenguaje: Java
+Creación: 10/10/2021
+Modificacion: 16/10/2021
+*/
 public class Mascota extends Acompanante{
     public Mascota(String nombre){
         super(nombre);

@@ -3,12 +3,13 @@ Nombre: Andrés Estuardo Montoya Wilhelm
 Programa: Juego.java
 Lenguaje: Java
 Creación: 24/09/2021
-Modificacion: 27/09/2021
+Modificacion: 16/10/2021
 */
 import java.util.ArrayList;
 public class Juego {
     ArrayList<Combatiente> combatientes;
     int nenemigos;
+    String hab_raid;
     public Juego(String[] clase, String[] nombre, int numero){
         combatientes = new ArrayList<Combatiente>();
         for(int i=0;i<numero;i++){
@@ -42,6 +43,15 @@ public class Juego {
             }
         }
         combatientes.add(new Raidboss("Borg"));
+        int nhab=0;
+        for(int i=0;i<combatientes.size();i++){
+            if(combatientes.get(i).getTipo().equals("Jefe")){
+                nhab=combatientes.get(i).cantidad_habilidades();
+                int nhabrand= (int)(Math.random()*nhab);
+                hab_raid=combatientes.get(i).getHabilidad(nhabrand);
+            }
+        }
+        
     }
     
     /** 
@@ -201,6 +211,9 @@ public class Juego {
                 combatientes.get(objetivo).disminuir_vida(150);
                 combatientes.get(portador).aumentar_vida(50);
                 break;
+            case "Destruir alma":
+                combatientes.get(objetivo).disminuir_vida(200);
+                break;
             case "Mordida":
                 combatientes.get(objetivo).disminuir_vida(combatientes.get(portador).getAtq());
                 break;
@@ -258,5 +271,29 @@ public class Juego {
     }
     public int numeroAcompanantes(int index){
         return combatientes.get(index).numeroAcompanantes();
+    }
+    public void eliminar_acompañantes(int index){
+        for(int i=0;i<combatientes.get(index).numeroAcompanantes();i++){
+            for(int j=0;j<combatientes.size();j++){
+                if(combatientes.get(index).getAcompanante(i).equals(combatientes.get(j))){
+                    combatientes.remove(j);
+                }
+            }
+        }
+        combatientes.get(index).clear_acompañantes();
+    }
+    public void cambiar_habraid(int habilidad, int portador){
+        String nombre_habilidad = combatientes.get(portador).getHabilidad(habilidad);
+        hab_raid=nombre_habilidad;
+    }
+    public void clonar(int objetivo, int portador){
+        String nombre= "Clon de "+combatientes.get(objetivo).getNombre();
+        String habilidad = hab_raid;
+        int atq = combatientes.get(objetivo).getAtq();
+        int vida= combatientes.get(objetivo).getVida();
+        combatientes.get(portador).setAcompanante(new Acompanante_enemigo(nombre, habilidad, atq, vida));
+    }
+    public String getHabraid(){
+        return hab_raid;
     }
 }

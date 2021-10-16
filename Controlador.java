@@ -3,7 +3,7 @@ Nombre: Andrés Estuardo Montoya Wilhelm
 Programa: Controlador.java
 Lenguaje: Java
 Creación: 24/09/2021
-Modificacion: 27/09/2021
+Modificacion: 16/10/2021
 */
 public class Controlador {
     
@@ -45,12 +45,12 @@ public class Controlador {
         boolean salir=false;
         int turno=0;
         while(salir==false){//ciclo de turnos
-            v.separador();
-            v.mostrar_combatientes(juego.mostrar_combatientes());//mostrar combatientes
-            v.separador();
             if(juego.getTipocombatiente(turno).equals("Guerrero")||juego.getTipocombatiente(turno).equals("Explorador")||juego.getTipocombatiente(turno).equals("Cazador")){//turno del jugador
                 int r=0;
                 boolean nomascota=true;
+                v.separador();
+                v.mostrar_combatientes(juego.mostrar_combatientes());//mostrar combatientes
+                v.separador();
                 while(r!=1&&r!=2&&r!=3&&r!=4&&nomascota){
                     v.mostrar_turno(juego.getNombre(turno));//mostrar turno
                     nomascota=true;
@@ -106,6 +106,7 @@ public class Controlador {
                                         v.separador();
                                         v.lanzado();
                                         v.separador();
+                                        r=0;
                                     }else{
                                         nomascota=false;
                                         juego.lanzar_acompañante(turno, 0);
@@ -122,6 +123,9 @@ public class Controlador {
                 }
             }else if(juego.getTipocombatiente(turno).equals("Enemigo")){//turno de los enemigos
                 int r=0;
+                v.separador();
+                v.mostrar_combatientes(juego.mostrar_combatientes());//mostrar combatientes
+                v.separador();
                 while(r!=1&&r!=2&&r!=3){
                     v.mostrar_turno(juego.getNombre(turno));//mostrar turno
                     r=v.menu_enemigo();//menu
@@ -156,6 +160,9 @@ public class Controlador {
                 }
             }else if(juego.getTipocombatiente(turno).equals("Jefe")){//turno de el raid boss
                 int r=0;
+                v.separador();
+                v.mostrar_combatientes(juego.mostrar_combatientes());//mostrar combatientes
+                v.separador();
                 boolean nomascota=true;
                 while(r!=1&&r!=2&&r!=3&&r!=4&&r!=5&&r!=6&&r!=7&&nomascota){
                     v.mostrar_turno(juego.getNombre(turno));//mostrar turno
@@ -169,31 +176,46 @@ public class Controlador {
                                 r2=v.elegir_objetivo(juego.mostrar_combatientes());
                             }
                             juego.atacar(turno, r2);//atacar objetivo
+                            for(int i=0; i<juego.numeroAcompanantes(turno);i++){//ataque de los acompañantes
+                                if(juego.acompañante_lanzado(turno, i)){
+                                    juego.usar_habilidad(juego.turno_acompañante(turno, i),i,r2);
+                                    v.separador();
+                                    v.ataque_acompañante();
+                                    v.separador();
+                                }
+                            }
                             break;
                         case 2://usar habilidad
-                            v.habilidad();
-                            int r_habilidad=-1;
-                            while(r_habilidad<0||r_habilidad>juego.numero_habilidades(turno)-1){//mostrar habilidades
-                                r_habilidad=v.elegir_habilidad(juego.mostrar_habilidades(turno));
+                            if(juego.numeroAcompanantes(turno)==0){//verificar si tiene acompañantes
+                                v.habilidad();
+                                int r_habilidad=-1;
+                                while(r_habilidad<0||r_habilidad>juego.numero_habilidades(turno)-1){//mostrar habilidades
+                                    r_habilidad=v.elegir_habilidad(juego.mostrar_habilidades(turno));
+                                }
+                                v.objetivo();
+                                int r_objetivo=-1;
+                                while(r_objetivo<0||r_objetivo>juego.ncombatientes()){// mostrar objetivos
+                                    r_objetivo=v.elegir_objetivo(juego.mostrar_combatientes());
+                                }
+                                juego.usar_habilidad(turno,r_habilidad,r_objetivo);//usar habilidad en objetivo
+                            }else{
+                                v.separador();
+                                v.nohabilidades();
+                                v.separador();
+                                r=0;
                             }
-                            v.objetivo();
-                            int r_objetivo=-1;
-                            while(r_objetivo<0||r_objetivo>juego.ncombatientes()){// mostrar objetivos
-                                r_objetivo=v.elegir_objetivo(juego.mostrar_combatientes());
-                            }
-                            juego.usar_habilidad(turno,r_habilidad,r_objetivo);//usar habilidad en objetivo
                             break;
                         case 3://Lanzar acompañantes
-                            if(juego.numeroAcompanantes(turno)!=0){
+                            if(juego.numeroAcompanantes(turno)!=0){//verificar si tiene acompañantes
                                 for(int i=0;i<juego.numeroAcompanantes(turno);i++){
-                                    if(juego.acompañante_lanzado(turno, i)){
+                                    if(juego.acompañante_lanzado(turno, i)){//verificar si los acompañantes ya están en el campo de batalla
                                         v.separador();
                                         v.lanzado2();
                                         v.separador();
                                         r=0;
                                     }else{
                                         nomascota=false;
-                                        juego.lanzar_acompañante(turno, i);
+                                        juego.lanzar_acompañante(turno, i);//lanzar acompañante
                                     }
                                 }
                             }else{
@@ -205,24 +227,39 @@ public class Controlador {
                             break;
                         case 4://clonar
                             v.objetivo();
-                            r_objetivo=-1;
+                            int r_objetivo=-1;
                             boolean clonable=false;
                             while(r_objetivo<0||r_objetivo>juego.ncombatientes()||!clonable){// mostrar objetivos
-                                r_objetivo=v.elegir_objetivo(juego.mostrar_combatientes());
+                                r_objetivo=v.elegir_objetivo(juego.mostrar_combatientes());//verificar si el objetivo es clonable
                                 if(juego.getTipocombatiente(r_objetivo).equals("Guerrero")||juego.getTipocombatiente(r_objetivo).equals("Explorador")||juego.getTipocombatiente(r_objetivo).equals("Cazador")||juego.getTipocombatiente(r_objetivo).equals("Jefe")||juego.getTipocombatiente(r_objetivo).equals("Acompanante_enemigo")){
                                     v.separador();
                                     v.noclonable();
                                     v.separador();
-                                }else{
+                                }else{//si es clonable
                                     clonable=true;
+                                    juego.clonar(r_objetivo, turno);//clonar objetivo
+                                    v.separador();
+                                    v.clonado();
+                                    v.separador();
                                 }
                             }
                             break;
                         case 5://Variar
-                            
+                            v.habilidad();
+                            int r_habilidad=-1;
+                            while(r_habilidad<0||r_habilidad>juego.numero_habilidades(turno)-1){//mostrar habilidades
+                                r_habilidad=v.elegir_habilidad(juego.mostrar_habilidades(turno));
+                            }
+                            juego.cambiar_habraid(r_habilidad, turno);//cambiar la habilidad a donar del raidboss
+                            v.separador();
+                            v.habilidad_compartida(juego.getHabraid());
+                            v.separador();
                             break;
                         case 6://liberar
-                            
+                            juego.eliminar_acompañantes(turno);//elimina a los acompañantes
+                            v.separador();
+                            v.liberado();
+                            v.separador();
                             break;
                         case 7://saltar turno
                             
@@ -238,6 +275,9 @@ public class Controlador {
                     if(juego.verificar_mascota(i)){
                         juego.reiniciar(i);
                         juego.setEfecto(i,3);
+                    }
+                    if(juego.getTipocombatiente(i)=="Cazador"){
+                        juego.eliminar_acompañantes(i);
                     }
                     v.separador();
                     v.mostrar_mensaje(juego.getNombre(i), juego.getMsgMuerte(i));//mensaje de muerte

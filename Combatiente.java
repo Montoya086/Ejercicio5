@@ -5,7 +5,7 @@ Nombre: Andrés Estuardo Montoya Wilhelm
 Programa: Combatiente.java
 Lenguaje: Java
 Creación: 24/09/2021
-Modificacion: 27/09/2021
+Modificacion: 16/10/2021
 */
 public abstract class Combatiente {
     protected String nombre;
@@ -118,6 +118,9 @@ public abstract class Combatiente {
     }
     public void reiniciar_atq(){
         atq=atq_inicial;
+    }
+    public void clear_acompañantes(){
+        acompañantes.clear();
     }
     abstract String get_habilidades();
     abstract int cantidad_habilidades();

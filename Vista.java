@@ -192,4 +192,16 @@ public class Vista {
     public void noclonable(){
         System.out.println("El objetivo seleccionado no es clonable");
     }
+    public void nohabilidades(){
+        System.out.println("Al tener clones no es posible lanzar habilidades");
+    }
+    public void clonado(){
+        System.out.println("El objetivo ha sido clonado");
+    }
+    public void liberado(){
+        System.out.println("Los acompañantes han sido liberados");
+    }
+    public void habilidad_compartida(String habilidad){
+        System.out.println("La habilidad compartida del Raidboss ha sido cambiada a: "+habilidad);
+    }
 }
